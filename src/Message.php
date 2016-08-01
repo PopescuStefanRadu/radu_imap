@@ -11,6 +11,8 @@
 
 namespace Drupal\radu_imap;
 
+use Drupal\radu_imap\Plugin\Imap\Server;
+
 /**
  * This library is a wrapper around the Imap library functions included in php. This class represents a single email
  * message as retrieved from the Imap.

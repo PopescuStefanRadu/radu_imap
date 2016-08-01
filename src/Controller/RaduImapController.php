@@ -5,6 +5,7 @@ namespace Drupal\radu_imap\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\plugin_type_example\SandwichPluginManager;
 use Drupal\radu_imap\ImapPluginManager;
+use Drupal\radu_imap\Message;
 use Drupal\radu_imap\Plugin\Imap\ImapBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -40,6 +41,17 @@ class RaduImapController extends ControllerBase {
       '#theme' => 'item_list',
       '#title' => 'Death plugins',
       '#items' => $mailboxes,
+    );
+
+    /** @var Message[] $mails */
+    $messages = $plugin->getOrderedMessages(SORTDATE,true,5);
+    foreach ($messages as $message){
+      $mails[]=$message->getMessageBody();
+    }
+    $build['messages'] = array (
+      '#theme' => 'item_list',
+      '#title' => 'Messages',
+      '#items' => $mails,
     );
 
     return $build;
