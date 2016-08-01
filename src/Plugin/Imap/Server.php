@@ -245,7 +245,7 @@ class Server extends PluginBase implements ImapInterface {
    */
   public function setOptions($bitmask = 0) {
     if (!is_numeric($bitmask)) {
-      throw new \RuntimeException('Function requires numeric argument.');
+      throw new \Exception('Function requires numeric argument.');
     }
 
     $this->serverOptions = $bitmask;
@@ -321,7 +321,7 @@ class Server extends PluginBase implements ImapInterface {
   protected function setImapStream() {
     if (!empty($this->imapStream)) {
       if (!imap_reopen($this->imapStream, $this->getServerString(), $this->serverOptions, 1)) {
-        throw new \RuntimeException(imap_last_error());
+        throw new \Exception(imap_last_error());
       }
     }
     else {
@@ -329,7 +329,8 @@ class Server extends PluginBase implements ImapInterface {
       $imapStream = @imap_open($this->getServerString(), $this->username, $this->password, $this->serverOptions, 1, $this->params);
 
       if ($imapStream === FALSE) {
-        throw new \RuntimeException(imap_last_error());
+        echo imap_last_error();
+        throw new \Exception(imap_last_error());
       }
 
       $this->imapStream = $imapStream;
