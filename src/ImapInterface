@@ -2,8 +2,6 @@
 
 namespace Drupal\radu_imap;
 
-use Drupal\views\Plugin\views\argument\StringArgument;
-
 interface ImapInterface {
 
   /**
