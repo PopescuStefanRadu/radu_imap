@@ -139,10 +139,18 @@ class Server extends PluginBase implements ImapInterface {
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->serverPath = $configuration['serverPath'];
-    if (in_array('port', $configuration)) {
+    if (array_key_exists('port', $configuration)) {
       $this->port = $configuration['port'];
+      switch ($this->port){
+        case 143:
+          $this->setFlag('novalidate-cert');
+          break;
+        case 993:
+          $this->setFlag('ssl');
+          break;
+      }
     }
-    if (in_array('service', $configuration)) {
+    if (array_key_exists('service', $configuration)) {
       $this->service = $configuration['service'];
     }
   }
