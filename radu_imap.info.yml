@@ -2,4 +2,4 @@ name: Radu imap
 type: module
 description: Imap automated mail receive service
 package: Radu imap
-# core: 8.x
+core: 8.x

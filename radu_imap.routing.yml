@@ -1,0 +1,7 @@
+radu_imap.description:
+  path: '/imap/test'
+  defaults:
+    _controller: '\Drupal\radu_imap\Controller\RaduImapController::test'
+    _title: 'Please help me god'
+  requirements:
+    _permission: 'access content'
