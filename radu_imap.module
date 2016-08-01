@@ -1,0 +1,34 @@
+<?php
+/**
+ * Implements hook_cron().
+ */
+use Drupal\radu_imap\ImapEvent;
+
+function radu_imap_cron() {
+
+  $configuration = array(
+    "serverPath" => "imap.mail.yahoo.com",
+    "port" => 993,
+    "username" => "nw407elixir@yahoo.com",
+    "password" => "mmloismsahbojkbm"
+  );
+
+  $imapPluginManager = \Drupal::service('plugin.manager.imap');
+  $imapPluginDefinition = $imapPluginManager->getDefinition('radu_imap_server');
+
+  /** @var ImapBase $plugin */
+  $plugin = $imapPluginManager->createInstance($imapPluginDefinition['id'], $configuration);
+  $plugin->setAuthentication('nw407elixir@yahoo.com', 'mmloismsahbojkbm');
+
+  /** @var Message[] $mails */
+  /** @var \Drupal\radu_imap\Plugin\Imap\Server $plugin */
+
+  $messages = $plugin->getOrderedMessages(SORTDATE, TRUE, 5);
+  foreach ($messages as $message) {
+    $mails[] = $message->getMessageBody();
+  }
+
+  $dispatcher = \Drupal::service('event_dispatcher');
+  $event = new ImapEvent($mails);
+  $eventDispatch = $dispatcher->dispatch('imap_radu.messages', $event);
+}
