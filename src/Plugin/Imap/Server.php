@@ -141,7 +141,7 @@ class Server extends PluginBase implements ImapInterface {
     $this->serverPath = $configuration['serverPath'];
     if (array_key_exists('port', $configuration)) {
       $this->port = $configuration['port'];
-      switch ($this->port){
+      switch ($this->port) {
         case 143:
           $this->setFlag('novalidate-cert');
           break;
@@ -270,7 +270,6 @@ class Server extends PluginBase implements ImapInterface {
     if (empty($this->imapStream)) {
       $this->setImapStream();
     }
-
     return $this->imapStream;
   }
 
@@ -326,6 +325,7 @@ class Server extends PluginBase implements ImapInterface {
       }
     }
     else {
+
       $imapStream = @imap_open($this->getServerString(), $this->username, $this->password, $this->serverOptions, 1, $this->params);
 
       if ($imapStream === FALSE) {

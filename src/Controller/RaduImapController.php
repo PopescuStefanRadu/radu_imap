@@ -32,8 +32,7 @@ class RaduImapController extends ControllerBase {
     /** @var ImapBase $plugin */
     $plugin = $this->imapPluginManager->createInstance($imap_plugin_definition['id'],$configuration);
 
-    $plugin->setAuthentication('nw407elixit@yahoo.com','mmloismsahbojkbm');
-//    kpr($plugin);
+    $plugin->setAuthentication('nw407elixir@yahoo.com','mmloismsahbojkbm');
 
     $mailboxes = $plugin->listMailBoxes();
 
@@ -43,13 +42,6 @@ class RaduImapController extends ControllerBase {
       '#items' => $mailboxes,
     );
 
-//    $imap_plugin_definitions = $this->imapPluginManager->getDefinitions();
-//    kpr($imap_plugin_definition);
-//    $build['plugins'] = array (
-//      '#theme' => 'item_list',
-//      '#title' => 'Death plugins',
-//      '#items' => $imap_plugin_definition,
-//    );
     return $build;
   }
 
