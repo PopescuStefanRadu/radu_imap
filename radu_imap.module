@@ -24,11 +24,8 @@ function radu_imap_cron() {
   /** @var \Drupal\radu_imap\Plugin\Imap\Server $plugin */
 
   $messages = $plugin->getOrderedMessages(SORTDATE, TRUE, 5);
-  foreach ($messages as $message) {
-    $mails[] = $message->getMessageBody();
-  }
 
   $dispatcher = \Drupal::service('event_dispatcher');
-  $event = new ImapEvent($mails);
+  $event = new ImapEvent($messages);
   $eventDispatch = $dispatcher->dispatch('imap_radu.messages', $event);
 }
