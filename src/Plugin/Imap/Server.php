@@ -193,14 +193,15 @@ class Server extends PluginBase implements ImapInterface {
     return $this->mailbox;
   }
 
-  /**
-   * This function sets or removes flag specifying connection behavior. In many cases the flag is just a one word
-   * deal, so the value attribute is not required. However, if the value parameter is passed false it will clear that
-   * flag.
-   *
-   * @param string $flag
-   * @param null|string|bool $value
-   */
+    /**
+     * This function sets or removes flag specifying connection behavior. In many cases the flag is just a one word
+     * deal, so the value attribute is not required. However, if the value parameter is passed false it will clear that
+     * flag.
+     *
+     * @param string $flag
+     * @param null|string|bool $value
+     * @return void
+     */
   public function setFlag($flag, $value = NULL) {
     if (!self::$sslEnable && in_array($flag, self::$sslFlags)) {
       return;
