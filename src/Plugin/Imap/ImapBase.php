@@ -38,38 +38,4 @@ class ImapBase extends Server {
       $this->setAuthentication($configuration['username'], $configuration['password']);
     }
   }
-
-  //todo remove
-  public function moveMailToMailBox($msglist, $mailbox, $options = 0) {
-    $result = imap_mail_move($this->getImapStream(),
-      $msglist,
-      $this->getServerSpecification() . $mailbox,
-      $options
-    );
-    return $result;
-  }
-
-  //todo remove
-  public function copyMailToMailBox($msglist, $mailbox, $options = 0) {
-    $result = imap_mail_copy(
-      $this->getImapStream(),
-      $msglist,
-      $this->getServerSpecification() . $mailbox,
-      $options
-    );
-    return $result;
-  }
-
-  //todo remove
-  public function deleteMail($msg_number, $options = 0) {
-    $result = imap_delete($this->getImapStream(), $msg_number, $options);
-    return $result;
-  }
-
-  //todo remove
-  public function undeleteMail($msg_number, $options = 0) {
-    $result = imap_undelete($this->getImapStream(), $msg_number, $options);
-    return $result;
-  }
-
 }

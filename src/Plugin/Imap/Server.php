@@ -528,20 +528,4 @@ class Server extends PluginBase implements ImapInterface {
   public function deleteMailBox($mailbox) {
     return imap_deletemailbox($this->getImapStream(), $this->getServerSpecification() . $mailbox);
   }
-
-  public function moveMailToMailBox($msglist, $mailbox, $options = 0) {
-    // TODO: Implement moveMailToMailBox() method.
-  }
-
-  public function copyMailToMailBox($msglist, $mailbox, $options = 0) {
-    // TODO: Implement copyMailToMailBox() method.
-  }
-
-  public function deleteMail($msg_number, $options = 0) {
-    // TODO: Implement deleteMail() method.
-  }
-
-  public function undeleteMail($msg_number, $options = 0) {
-    // TODO: Implement undeleteMail() method.
-  }
 }

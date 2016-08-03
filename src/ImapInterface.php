@@ -171,43 +171,4 @@ interface ImapInterface {
    * @return bool
    */
   public function deleteMailBox($mailbox);
-
-  /**
-   * Moves one or a selection of mails to the given mailbox
-   *
-   * @param string $msglist "1,2:4" reads as mails 1,2,3,4
-   * @param string $mailbox
-   * @param int $options FT_UID
-   * @return bool
-   */
-  public function moveMailToMailBox($msglist, $mailbox, $options = 0);
-
-  /**
-   * Copies one or a selection of mails to the given mailbox
-   *
-   * @param string $msglist "1,2:4" reads as mails 1,2,3,4
-   * @param string $mailbox
-   * @param int $options FT_UID
-   * @return bool
-   */
-  public function copyMailToMailBox($msglist, $mailbox, $options = 0);
-
-  /**
-   * Mark one or a selection of emails for deletion
-   *
-   * @param String $msg_number "1,2:4" reads as mails 1,2,3,4
-   * @param int $options FT_UID
-   * @return bool
-   */
-  public function deleteMail($msg_number, $options = 0);
-
-
-  /**
-   * Unmark one or a selection of emails for deletion
-   *
-   * @param string $msg_number $msg_number "1,2:4" reads as mails 1,2,3,4
-   * @param int $options FT_UID
-   * @return bool
-   */
-  public function undeleteMail($msg_number, $options = 0);
 }
