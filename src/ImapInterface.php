@@ -9,9 +9,9 @@ interface ImapInterface {
    *
    * @param string $username
    * @param string $password
-   * @param bool   $tryFasterAuth tries to auth faster by disabling GSSAPI & NTLM auth methods (set to false if you use either of these auth methods)
+   * @param bool $tryFasterAuth tries to auth faster by disabling GSSAPI & NTLM auth methods (set to false if you use either of these auth methods)
    */
-  public function setAuthentication($username, $password, $tryFasterAuth=true);
+  public function setAuthentication($username, $password, $tryFasterAuth = TRUE);
 
   /**
    * Set mailbox to connect to (e.g. INBOX, SENT)
@@ -81,7 +81,7 @@ interface ImapInterface {
    * @param  null|int $limit
    * @return array    An array of ImapMessage objects
    */
-  public function search($criteria = 'ALL', $limit = null);
+  public function search($criteria = 'ALL', $limit = NULL);
 
   /**
    * This function returns the recently received emails as an array of ImapMessage objects.
@@ -89,24 +89,24 @@ interface ImapInterface {
    * @param  null|int $limit
    * @return array    An array of ImapMessage objects for emails that were recently received by the server.
    */
-  public function getRecentMessages($limit = null);
+  public function getRecentMessages($limit = NULL);
 
   /**
    * Returns the emails in the current mailbox as an array of ImapMessage objects.
    *
-   * @param  null|int  $limit
+   * @param  null|int $limit
    * @return Message[]
    */
-  public function getMessages($limit = null);
+  public function getMessages($limit = NULL);
 
   /**
    * Returns the emails in the current mailbox as an array of ImapMessage objects
    * ordered by some ordering
    *
    * @see    http://php.net/manual/en/function.imap-sort.php
-   * @param  int       $orderBy
-   * @param  bool      $reverse
-   * @param  int       $limit
+   * @param  int $orderBy
+   * @param  bool $reverse
+   * @param  int $limit
    * @return Message[]
    */
   public function getOrderedMessages($orderBy, $reverse, $limit);
@@ -114,7 +114,7 @@ interface ImapInterface {
   /**
    * Returns the requested email or false if it is not found.
    *
-   * @param  int          $uid
+   * @param  int $uid
    * @return Message|bool
    */
   public function getMessageByUid($uid);
@@ -180,7 +180,7 @@ interface ImapInterface {
    * @param int $options FT_UID
    * @return bool
    */
-  public function moveMailToMailBox($msglist, $mailbox, $options=0);
+  public function moveMailToMailBox($msglist, $mailbox, $options = 0);
 
   /**
    * Copies one or a selection of mails to the given mailbox
@@ -190,7 +190,7 @@ interface ImapInterface {
    * @param int $options FT_UID
    * @return bool
    */
-  public function copyMailToMailBox($msglist,$mailbox,$options=0);
+  public function copyMailToMailBox($msglist, $mailbox, $options = 0);
 
   /**
    * Mark one or a selection of emails for deletion
@@ -199,15 +199,15 @@ interface ImapInterface {
    * @param int $options FT_UID
    * @return bool
    */
-  public function deleteMail($msg_number,$options = 0);
+  public function deleteMail($msg_number, $options = 0);
 
 
   /**
    * Unmark one or a selection of emails for deletion
    *
-   * @param string $msg_number  $msg_number "1,2:4" reads as mails 1,2,3,4
+   * @param string $msg_number $msg_number "1,2:4" reads as mails 1,2,3,4
    * @param int $options FT_UID
    * @return bool
    */
-  public function undeleteMail($msg_number,$options=0);
+  public function undeleteMail($msg_number, $options = 0);
 }

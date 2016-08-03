@@ -1,0 +1,5 @@
+radu_imap:
+  email: example@example.com
+  password: example
+  server_path: imap.example.com
+  port: '993'

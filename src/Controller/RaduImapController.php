@@ -15,14 +15,14 @@ class RaduImapController extends ControllerBase {
    */
   protected $imapPluginManager;
 
-  public function test(){
+  public function test() {
 
-    $build = array ();
+    $build = array();
     $build['intro'] = array(
       '#markup' => t("Plis work"),
     );
 
-    $configuration = array (
+    $configuration = array(
       "serverPath" => "imap.mail.yahoo.com",
       "port" => 993,
       "username" => "nw407elixir@yahoo.com",
@@ -31,24 +31,24 @@ class RaduImapController extends ControllerBase {
 
     $imap_plugin_definition = $this->imapPluginManager->getDefinition('radu_imap_server');
     /** @var ImapBase $plugin */
-    $plugin = $this->imapPluginManager->createInstance($imap_plugin_definition['id'],$configuration);
+    $plugin = $this->imapPluginManager->createInstance($imap_plugin_definition['id'], $configuration);
 
-    $plugin->setAuthentication('nw407elixir@yahoo.com','mmloismsahbojkbm');
+    $plugin->setAuthentication('nw407elixir@yahoo.com', 'mmloismsahbojkbm');
 
     $mailboxes = $plugin->listMailBoxes();
 
-    $build['plugins'] = array (
+    $build['plugins'] = array(
       '#theme' => 'item_list',
       '#title' => 'Death plugins',
       '#items' => $mailboxes,
     );
 
     /** @var Message[] $mails */
-    $messages = $plugin->getOrderedMessages(SORTDATE,true,5);
-    foreach ($messages as $message){
-      $mails[]=$message->getMessageBody();
+    $messages = $plugin->getOrderedMessages(SORTDATE, TRUE, 5);
+    foreach ($messages as $message) {
+      $mails[] = $message->getMessageBody();
     }
-    $build['messages'] = array (
+    $build['messages'] = array(
       '#theme' => 'item_list',
       '#title' => 'Messages',
       '#items' => $mails,

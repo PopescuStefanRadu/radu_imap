@@ -21,7 +21,7 @@ class ImapBase extends Server {
     $this->serverPath = $configuration['serverPath'];
     if (array_key_exists('port', $configuration)) {
       $this->port = $configuration['port'];
-      switch ($this->port){
+      switch ($this->port) {
         case 143:
           $this->setFlag('novalidate-cert');
           break;
@@ -34,8 +34,8 @@ class ImapBase extends Server {
       $this->service = $configuration['service'];
     }
 
-    if (array_key_exists('username',$configuration) &&array_key_exists('password',$configuration)){
-        $this->setAuthentication($configuration['username'],$configuration['password']);
+    if (array_key_exists('username', $configuration) && array_key_exists('password', $configuration)) {
+      $this->setAuthentication($configuration['username'], $configuration['password']);
     }
   }
 

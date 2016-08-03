@@ -23,7 +23,7 @@ class ImapPluginManager extends DefaultPluginManager {
     $pluginInterface = 'Drupal\radu_imap\ImapInterface';
     $pluginDefinitionAnnotationName = 'Drupal\Component\Annotation\Plugin';
 
-    parent::__construct($subdir,$namespaces,$moduleHandler,$pluginInterface,$pluginDefinitionAnnotationName);
+    parent::__construct($subdir, $namespaces, $moduleHandler, $pluginInterface, $pluginDefinitionAnnotationName);
 
 //    $this->alterInfo('imap_info');
 //    $this->setCacheBackend($cacheBackend,'sandwich_info');

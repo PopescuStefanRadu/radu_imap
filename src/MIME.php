@@ -18,28 +18,26 @@ namespace Drupal\radu_imap;
  * @author  Robert Hafner <tedivm@tedivm.com>
  * @author  Sergey Linnik <linniksa@gmail.com>
  */
-final class MIME
-{
-    /**
-     * @param string $text
-     * @param string $targetCharset
-     *
-     * @return string
-     */
-    public static function decode($text, $targetCharset = 'utf-8')
-    {
-        if (null === $text) {
-            return null;
-        }
-
-        $result = '';
-
-        foreach (imap_mime_header_decode($text) as $word) {
-            $ch = 'default' === $word->charset ? 'ascii' : $word->charset;
-
-            $result .= iconv($ch, $targetCharset, $word->text);
-        }
-
-        return $result;
+final class MIME {
+  /**
+   * @param string $text
+   * @param string $targetCharset
+   *
+   * @return string
+   */
+  public static function decode($text, $targetCharset = 'utf-8') {
+    if (NULL === $text) {
+      return NULL;
     }
+
+    $result = '';
+
+    foreach (imap_mime_header_decode($text) as $word) {
+      $ch = 'default' === $word->charset ? 'ascii' : $word->charset;
+
+      $result .= iconv($ch, $targetCharset, $word->text);
+    }
+
+    return $result;
+  }
 }
