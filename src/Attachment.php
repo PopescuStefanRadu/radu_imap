@@ -10,6 +10,7 @@
  */
 
 namespace Drupal\radu_imap;
+use Drupal\Core\File\FileSystem;
 
 /**
  * This library is a wrapper around the Imap library functions included in php. This class wraps around an attachment
@@ -189,20 +190,21 @@ class Attachment
      *
      * @param  string $path
      * @return bool
+     * @throws \Exception
      */
     public function saveAs($path)
     {
         $dirname = dirname($path);
         if (file_exists($path)) {
             if (!is_writable($path)) {
-                return false;
+                throw new \Exception("File or directory" .$path. " exists but is not writeable");
             }
         } elseif (!is_dir($dirname) || !is_writable($dirname)) {
-            return false;
+            throw new \Exception("File or directory" .$path. " does not exist or is unwritable");
         }
 
         if (($filePointer = fopen($path, 'w')) == false) {
-            return false;
+            throw new \Exception("File pointer with write mode could not be opened at path:" . $path);
         }
 
         switch ($this->encoding) {

@@ -208,8 +208,10 @@ class Message
      * message should be opened from. This constructor should generally not be called directly, but rather retrieved
      * through the apprioriate Imap functions.
      *
-     * @param int    $messageUniqueId
-     * @param Server $mailbox
+     * @param int $messageUniqueId
+     * @param Server $connection
+     * @throws \Exception
+     * @internal param Server $mailbox
      */
     public function __construct($messageUniqueId, Server $connection)
     {
@@ -218,7 +220,7 @@ class Message
         $this->uid            = $messageUniqueId;
         $this->imapStream     = $this->imapConnection->getImapStream();
         if($this->loadMessage() !== true)
-            throw new \RuntimeException('Message with ID ' . $messageUniqueId . ' not found.');
+            throw new \Exception('Message with ID ' . $messageUniqueId . ' not found.');
     }
 
     /**
@@ -779,15 +781,38 @@ class Message
      * This function is used to move a mail to the given mailbox.
      *
      * @param $mailbox
-     *
      * @return bool
+     * @throws \Exception
      */
-    public function moveToMailBox($mailbox)
-    {
+    public function moveToMailBox($mailbox) {
+        imap_errors();
         $currentBox = $this->imapConnection->getMailBox();
         $this->imapConnection->setMailBox($this->mailbox);
 
-        $returnValue = imap_mail_copy($this->imapStream, $this->uid, $mailbox, CP_UID | CP_MOVE);
+        $returnValue = imap_mail_copy($this->imapStream, $this->uid, $mailbox, CP_UID|CP_MOVE);
+        if ($returnValue == false) {
+            throw new \Exception(imap_last_error());
+        }
+        imap_expunge($this->imapStream);
+
+        $this->mailbox = $mailbox;
+
+        $this->imapConnection->setMailBox($currentBox);
+
+        return $returnValue;
+    }
+
+    /**
+     * This function is used to copy a mail to the given mailbox
+     *
+     * @param $mailbox
+     * @return bool
+     */
+    public function copyToMailBox($mailbox){
+        $currentBox = $this->imapConnection->getMailBox();
+        $this->imapConnection->setMailBox($this->mailbox);
+
+        $returnValue = imap_mail_copy($this->imapStream, $this->uid, $mailbox, CP_UID);
         imap_expunge($this->imapStream);
 
         $this->mailbox = $mailbox;

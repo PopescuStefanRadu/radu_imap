@@ -8,6 +8,7 @@
 
 namespace Drupal\radu_imap\Tests\Plugin;
 
+use Drupal\Core\File\FileSystem;
 use Drupal\radu_imap\Attachment;
 use Drupal\radu_imap\ImapPluginManager;
 use Drupal\radu_imap\Message;
@@ -66,7 +67,7 @@ class ImapBaseTest extends PluginTestBase
     public function testComplexTest()
     {
 
-        // Test mailbox creation
+        //Test createMailBox
         $this->imapBase->createMailBox("EDW2");
         if ($this->imapBase->hasMailBox("INBOX.EDW2")) {
             $this->pass("EDW2 mailbox was created");
@@ -74,7 +75,7 @@ class ImapBaseTest extends PluginTestBase
             $this->fail("EDW2 mailbox was not created");
         }
 
-        //Get mail from mailbox
+        //Test getOrderedMessages
         $this->imapBase->setMailBox("INBOX.EDW");
         /** @var Message[] $messages */
         $messages = $this->imapBase->getOrderedMessages(SORTDATE, false, 1);
@@ -85,34 +86,80 @@ class ImapBaseTest extends PluginTestBase
             $this->fail('Mailbox empty or error');
         }
 
-        //Attachment save check
+        //Test attachment save
         foreach ($messages as $message) {
             /** @var Attachment[] $attachments */
             $attachments = $message->getAttachments();
             foreach ($attachments as $attachment) {
-                mkdir($this->publicFilesDirectory);
-                $attachment->saveToDirectory($this->publicFilesDirectory);
-                $path = $this->publicFilesDirectory . $attachment->getFileName();
-                if (is_file($path)){
+                $dirPath = DRUPAL_ROOT .DIRECTORY_SEPARATOR . $this->publicFilesDirectory;
+                $attachment->saveToDirectory($dirPath);
+                $filePath = $dirPath . DIRECTORY_SEPARATOR . $attachment->getFileName();
+
+                if (is_file($filePath)){
                     $this->pass("The attachment was successfully saved");
-                    if (unlink($path)){
+                    if (unlink($filePath)){
                         $this->pass("The attachment was successfully removed");
                     } else {
-                        $this->fail("The attachment was not removed after being saved to:" .$path);
+                        $this->fail("The attachment was not removed after being saved to:" . $filePath);
                     }
                     break;
                 } else {
-                    $this->fail("The attachment was not saved. Path:". $path);
+                    $this->fail("The attachment was not saved. Path:". $filePath);
                 }
             }
         }
 
-        //Test mailbox deletion
-        $this->imapBase->deleteMailBox("INBOX.EDW2");
-        if ($this->imapBase->hasMailBox("INBOX.EDW2")) {
-            $this->fail("EDW2 mailbox was not deleted");
-        } else {
-            $this->pass("EDW2 mailbox was successfully deleted");
+
+        //Test getMessageByUid
+        foreach ($messages as $message){
+            $msgUid = $message->getUid();
+            $msg2 =$this->imapBase->getMessageByUid($msgUid);
+            if ($msg2 == false) {
+                $this->fail("Could not get message by Uid");
+            } else {
+                $this->pass("getMessageByUid(messageUid) works");
+            }
         }
+
+
+        //Test mail copy to mailbox
+        foreach ($messages as $message){
+            $message->copyToMailBox("INBOX.EDW2");
+            $this->imapBase->setMailBox("INBOX.EDW2");
+            $msg2=$this->imapBase->getMessages(1);
+            if (!empty($msg2)){
+                $msg2 = reset($msg2);
+                if ($message->getMessageBody() == $msg2->getMessageBody()) {
+                    $this->pass('Message was correctly copied');
+                } else {
+                    $this->fail("Message was not correctly copied");
+                }
+            } else {
+                $this->fail("Message was not copied");
+            }
+
+
+            //Test message delete
+            $msg2->delete();
+            $this->imapBase->setMailBox("INBOX.EDW2");
+            $this->imapBase->expunge();
+            $this->assertEqual(0,$this->imapBase->numMessages("INBOX.EDW2"),'Message was successfully deleted');
+
+            //Test message move
+            $this->imapBase->setMailBox("EDW");
+            $result = $message->moveToMailBox("EDW2");
+            $this->pass("movetomailbox " .$result);
+            $this->assertEqual(0,$this->imapBase->numMessages("EDW"), 'Message no longer in INBOX.EDW');
+            $this->assertEqual(1,$this->imapBase->numMessages("EDW2"),'Message moved to INBOX.EDW2');
+//            $message->moveToMailBox("EDW");
+        }
+
+        //Test mailbox deletion
+//        $this->imapBase->deleteMailBox("INBOX.EDW2");
+//        if ($this->imapBase->hasMailBox("INBOX.EDW2")) {
+//            $this->fail("EDW2 mailbox was not deleted");
+//        } else {
+//            $this->pass("EDW2 mailbox was successfully deleted");
+//        }
     }
 }

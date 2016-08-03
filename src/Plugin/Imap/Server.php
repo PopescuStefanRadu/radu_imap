@@ -330,7 +330,6 @@ class Server extends PluginBase implements ImapInterface {
       $imapStream = @imap_open($this->getServerString(), $this->username, $this->password, $this->serverOptions, 1, $this->params);
 
       if ($imapStream === FALSE) {
-        echo imap_last_error();
         throw new \Exception(imap_last_error());
       }
 
@@ -453,10 +452,11 @@ class Server extends PluginBase implements ImapInterface {
    */
   public function getMessageByUid($uid) {
     try {
-      $message = new \Drupal\radu_imap\Message($uid, $this);
+      $message = new Message($uid, $this);
 
       return $message;
     } catch (\Exception $e) {
+        throw $e;
       return FALSE;
     }
   }
